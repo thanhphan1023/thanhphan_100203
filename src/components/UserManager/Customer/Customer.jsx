@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { FaUsers } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa6";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import axios from "axios";
-import CustomerItem from '../Customer/CustomerItem';
 import { TbArrowsSort } from "react-icons/tb";
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import CustomerItem from '../Customer/CustomerItem';
+import { fetchAllCustomers } from '../../../services/customerService';
 
 const Customer = () => {
     const [customer, setCustomer] = useState([]);
@@ -13,10 +13,10 @@ const Customer = () => {
 
     const getCustomer = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/Customer");
-            setCustomer(res.data);
-        } catch (err) {
-            console.log("Lỗi", err);
+            const data = await fetchAllCustomers();
+            setCustomer(data);
+        } catch (error) {
+            console.error("Unable to get customer list:", error);
         }
     };
 
@@ -24,9 +24,13 @@ const Customer = () => {
         getCustomer();
     }, []);
 
+    const handleDeleteCustomer = (email) => {
+        const updatedCustomers = customer.filter(item => item.email !== email);
+        setCustomer(updatedCustomers);
+    };
+
     return (
         <div>
-            {/* Chỉ hiển thị danh sách khi không ở trang New Customer */}
             {!location.pathname.includes("/usermanager/customer/new") && (
                 <>
                     <div className='flex items-center justify-between'>
@@ -46,26 +50,14 @@ const Customer = () => {
                         <thead>
                             <tr>
                                 <th className="px-4 py-2 text-center border-b">STT</th>
-                                <th className="px-4 py-2 text-left border-b">
-                                    <div className="flex items-center justify-center gap-1 text-left">
-                                        <TbArrowsSort className="cursor-pointer" />Name
-                                    </div>
-                                </th>
                                 <th className="px-4 py-2 text-center border-b">
                                     <div className="flex items-center justify-center gap-1">
-                                        <TbArrowsSort className="cursor-pointer" />Email
+                                        <TbArrowsSort className="cursor-pointer" /> Name
                                     </div>
                                 </th>
-                                <th className="px-4 py-2 text-center border-b">
-                                    <div className="flex items-center justify-center gap-1">
-                                        <TbArrowsSort className="cursor-pointer" />Type
-                                    </div>
-                                </th>
-                                <th className="px-4 py-2 text-center border-b">
-                                    <div className="flex items-center justify-center gap-1">
-                                        <TbArrowsSort className="cursor-pointer" />Address
-                                    </div>
-                                </th>
+                                <th className="px-4 py-2 text-center border-b">Email</th>
+                                <th className="px-4 py-2 text-center border-b">Type</th>
+                                <th className="px-4 py-2 text-center border-b">Address</th>
                                 <th className="px-4 py-2 text-left border-b">Password</th>
                                 <th className="px-4 py-2 text-left border-b">Phone</th>
                                 <th className="px-4 py-2 text-center border-b">Status</th>
@@ -74,7 +66,7 @@ const Customer = () => {
                         </thead>
                         <tbody>
                             {customer.map((item, index) => (
-                                <CustomerItem key={index} item={item} />
+                                <CustomerItem key={index} item={item} onDelete={handleDeleteCustomer} />
                             ))}
                         </tbody>
                     </table>

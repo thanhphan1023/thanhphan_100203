@@ -21,7 +21,7 @@ const EmployeeItem = ({ item }) => {
                     {item.role}
                 </span>
             </td>
-            <td className="px-4 py-2 text-center ">{item.member_since}</td>
+            <td className="px-4 py-2 text-center ">{item.hiredDate}</td>
             <td className="px-4 py-2 ">
                 <div className='flex items-center justify-center gap-2 '>
                     <button className='bg-green-300 w-[26px] h-[28px] rounded-lg flex justify-center items-center'>

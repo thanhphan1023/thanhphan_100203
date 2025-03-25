@@ -7,6 +7,8 @@ import Employee from './components/UserManager/Employee/Employee';
 import Role from './components/UserManager/Role/Role';
 import Customer from './components/UserManager/Customer/Customer';
 import NewCustomer from './components/UserManager/Customer/NewCustomer';
+import NewEmployess from './components/UserManager/Employee/NewEmployess';
+import CustomerEdit from './components/UserManager/Customer/CustomerEdit';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
             <Route path='employee' element={<Employee />} />
             <Route path='role' element={<Role />} />
             <Route path='customer/new' element={<NewCustomer />} />
+            <Route path='customer/edit' element={<CustomerEdit />} />
+            <Route path='employee/new' element={<NewEmployess />} />
           </Route>
         </Route>
       </Routes>
